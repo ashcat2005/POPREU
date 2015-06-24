@@ -1,0 +1,258 @@
+Taken from http://clemmblog.azurewebsites.net/building-a-multi-node-hadoop-v2-cluster-with-ubuntu-on-windows-azure/
+
+Set up Azure:
+-navigate to http://www.microsoftazurepass.com/ and follow their instructions
+
+Login to Azure:
+-https://manage.windowsazure.com/
+
+Creating a virtual network:
+Source:   https://azure.microsoft.com/en-us/documentation/articles/create-virtual-network/
+All VMs in our Hadoop cluster will be deployed to a single virtual network in order to achieve network visibility among the nodes.
+To create this example cloud-only virtual network, do the following:
+-Log in to the Management Portal.
+-In the lower left-hand corner of the screen, click New > Network Services >
+Virtual Network, and then click Custom Create to begin the configuration wizard.
+-On the Virtual Network Details page, enter the following information:
+-Name - Type hadoopnet.
+-Region - East US 2
+-Click the next arrow on the lower right.
+-On the DNS Servers and VPN Connectivity page, click the next arrow on the lower right. Azure will assign an Internet-based Azure DNS server to new virtual machines that are added to this virtual network, which will allow them to access Internet resources.
+	 -On the Virtual Network Address Spaces page, configure the following:
+		-For Address Space, select /8 in CIDR (ADDRESS COUNT)
+		-For subnets, type hadoop over the existing name and 10.0.0.0 for the starting
+IP, then select /24(256) in the CIDR (ADDRESS COUNT). 
+
+Build an Ubuntu Image:
+	-In the lower left-hand corner of the screen, click New > Compute > Virtual Machine > From Gallery
+	-On the Choose an Image page, select Ubuntu Server 12.04 LTS and click the right arrow
+	-On the Virtual machine configuration page, set the following:
+		-Virtual Machine Name: hdtemplate
+		-Size: A1
+		-New User Name: hduser
+		-Authentication:
+			-uncheck upload compatible ssh key for authentication
+			-check provide a password
+			-New password: <your choice>
+		-click on the arrow on the lower right
+	-On the second Virtual machine configuration page, set the following:
+		-CLOUD SERVICE: Create a new cloud service
+		-CLOUD SERVICE DNS NAME: <your choice>
+		-REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
+		-VIRTUAL NETWORK SUBNETS: hadoop
+	-click the right arrow to finish
+
+-SSH into hdtemplate using PuTTy or Terminal:
+		-To find the IP Address:
+			-navigate to VIRTUAL MACHINES found on the left hand panel
+			-click on hdtemplate
+			-click on dashboard
+			-on the right hand side PUBLIC VIRTUAL IP (VIP) ADDRESS is the IP you want
+		-SSH using the username hduser
+	-Install Java
+		-sudo add-apt-repository ppa:webupd8team/java
+		-sudo apt-get update
+		-sudo apt-get install oracle-java7-installer
+		-sudo apt-get install oracle-java7-set-default
+	-Install Hadoop
+-wget http://apache.spinellicreations.com/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
+-tar -xvzf hadoop-2.6.0.tar.gz
+-sudo mv hadoop-2.6.0 /usr/local
+-Set Environment Variables for Java & Hadoop
+	-to edit the .bashrc file, execute “vi .bashrc” 
+	-to enter insert mode in VI press “i”
+	-at the end of the .bashrc file add the following:
+
+		export HADOOP_PREFIX=/usr/local/hadoop-2.6.0
+		export HADOOP_HOME=/usr/local/hadoop-2.6.0
+		export HADOOP_MAPRED_HOME=${HADOOP_HOME}
+		export HADOOP_COMMON_HOME=${HADOOP_HOME}
+		export HADOOP_HDFS_HOME=${HADOOP_HOME}
+		export YARN_HOME=${HADOOP_HOME}
+		export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+
+		# Native Path
+		export HADOOP_COMMON_LIB_NATIVE_DIR=${HADOOP_PREFIX}/lib/native
+		export HADOOP_OPTS="-Djava.library.path=$HADOOP_PREFIX/lib"
+
+		#Java path
+		export JAVA_HOME=/usr/lib/jvm/java-7-oracle
+
+		# Add Hadoop bin/ directory to PATH
+		export PATH=$PATH:$HADOOP_HOME/bin:$JAVA_PATH/bin:$HADOOP_HOME/sbin
+
+	-to exit and save press “esc” and type “:wq”
+	-cd  $HADOOP_HOME/etc/hadoop 
+	-vi hadoop-env.sh
+		-add “export JAVA_HOME=/usr/lib/jvm/java-7-oracle” to the file
+	-vi core-site
+		- remove the <configuration> and </configuration> tags
+		- insert the following:
+
+			<configuration> 
+				<property> 
+					<name>fs.default.name</name> 
+					<value>hdfs://master:9000</value> 
+				</property> 
+				<property> 
+					<name>hadoop.tmp.dir</name> 
+					<value>/home/hduser/tmp</value> 
+				</property> 
+			</configuration>
+
+	-vi hdfs-site
+		-remove the <configuration> and </configuration> tags
+		- insert the following:
+
+			<configuration> 
+				<property> 
+					<name>dfs.replication</name> 
+					<value>2</value>
+				 </property> 
+				<property> 
+					<name>dfs.namenode.name.dir</name> <value>file:/home/hduser/hdfs/namenode</value> 
+				</property> 
+				<property> 
+					<name>dfs.datanode.data.dir</name> 
+					<value>file:/home/hduser/hdfs/datanode</value> 
+				</property> 
+			</configuration>
+
+		-the value for dfs.replication is the number of replicas you want to keep in your HDFS file system. As we will start with two slave nodes let’s set it to 2
+		-mkdir /home/hduser/hdfs
+		-mkdir /home/hduser/hdfs/namenode
+		-mkdir /home/hduser/hdfs/datanode
+	-cp mapred-site.xml.template mapred-site.xml
+	-vi mapred-site.xml
+		-remove the <configuration> and </configuration> tags
+		- insert the following:
+			<configuration> 
+				<property> 
+					<name>mapreduce.framework.name</name> 
+					<value>yarn</value> 
+				</property> 
+			</configuration>
+	
+	-vi yarn-site.xml
+		-remove the <configuration> and </configuration> tags
+		- insert the following:
+
+			<configuration> 
+				<property> 
+					<name>yarn.nodemanager.aux-services</name> 
+					<value>mapreduce_shuffle</value> 
+				</property> 
+				<property> 
+					<name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name> 
+					<value>org.apache.hadoop.mapred.ShuffleHandler</value> 
+				</property> 
+				<property> 
+					<name>yarn.resourcemanager.resource-tracker.address</name> 
+					<value>master:8031</value> 
+				</property>
+				<property> 
+					<name>yarn.resourcemanager.address</name> 
+					<value>master:8032</value> 
+				</property> 
+				<property> 
+					<name>yarn.resourcemanager.scheduler.address</name>
+					<value>master:8030</value> 
+				</property>
+			 </configuration>
+
+	-sudo vi /etc/hosts
+		-add the following to the hosts file
+			10.0.0.4 master 
+			10.0.0.5 slave01 
+			10.0.0.6 slave02
+	-sudo waagent -deprovision
+	-exit
+	-Shutdown hdimage from the management portal by clicking on the command bar
+	-when hdimage is stopped, click capture to open the Capture the Virtual Machine dialog box
+		-give the Image Name: hdimage
+		-Click I have run waagent-deprovision on the virtual machine
+		-click the check mark to capture the image
+
+Build the Master
+	-Click the New button 
+	-Click Virtual Machine 
+	-Select From Gallery
+	-Select from My Images: hdimage
+	-click the right arrow
+	-Enter the following parameters in the Virtual machine configuration
+		-VIRTUAL MACHINE NAME: master
+		-SIZE: A1
+		-NEW USER NAME: hduser
+		-deselect UPLOAD COMPATIBLE SSH KEY FOR AUTHENTICATION
+		-select PROVIDE A PASSWORD
+		-NEW PASSWORD: <your choice>
+		-Click the right arrow
+	-On the second Virtual machine configuration page
+		-Select the CLOUD SERVICE DNS NAME that you previously created 
+		-REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
+		-Virtual Network Subnets: hadoop
+		-Add the following endpoints with the following attributes for (Name-Protocol-Public Port-Private Port):
+			HDFS-TCP-50070-50070
+			Cluster-TCP-8088-8088
+			JobHistory-TCP-19888-19888
+	-Click the right arrow and then the checkmark 
+
+Build the Slaves
+	-Click the New button
+	-Click Virtual Machine
+	-Select From Gallery
+	-Select from My Images: hdimage
+	-click the right arrow
+	-Enter the following parameters in the Virtual machine configuration
+		-VIRTUAL MACHINE NAME: slave01
+		-SIZE: A1
+		-NEW USER NAME:hduser
+		-deselect UPLOAD COMPATIBLE SSH KEY FOR AUTHENTICATION
+		-select PROVIDE A PASSWORD
+		-NEW PASSWORD: <your choice>
+	-Click the right arrow
+	-On the second Virtual machine configuration page
+		-Select the CLOUD SERVICE DNS NAME that you previously created
+		-Virtual Network Subnets: hadoop
+		-REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
+		-Click the right arrow and then the checkmark 
+Repeat the above using the VIRTUAL MACHINE NAME slave02
+
+Configure the Master
+	-ssh into master (find the IP the same way as above)
+	-vi $HADOOP_HOME/etc/hadoop/slaves
+		-add the following entries:
+			-slave01
+			-slave02
+		-remove localhost
+	-generate a public key by executing the following:
+		-ssh-keygen -t rsa -P “”
+	-Accept the default file name (.ssh/id_rsa)
+	-Copy the public key to slave01 and slave02
+	-ssh-copy-id -i .ssh/id_rsa.pub hduser@slave01
+	-ssh-copy-id -i .ssh/id_rsa.pub hduser@slave02
+-Check to see if you can passwordless ssh into slave01 by executing:
+	-ssh hduser@slave01
+-Exit slave01, by typing “exit”
+-Check to see if you can passwordless ssh into slave02 by executing:
+	-ssh hduser@slave02
+-Exit slave02, by typing “exit”
+
+Format the NameNode on master
+	-hdfs namenode -format
+Start the Cluster
+	-Start the namenode:
+		hadoop-daemon.sh start namenode
+	-Start the datanode:
+		hadoop-daemons.sh start datanode
+	-Start resource manager on master:
+		yarn-daemon.sh start resourcemanager
+	-Start node managers on the slaves by running the following on the master:
+		yarn-daemons.sh start nodemanager
+	-Start the job history server on master:
+		mr-jobhistory-daemon.sh start historyserver
+
+Test the Cluster
+	-  hadoop jar /usr/local/hadoop-2.6.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar pi 8 1000
+	- The final output should be:
+		Estimated value of Pi is 3.141000000000000000000

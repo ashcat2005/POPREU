@@ -29,11 +29,11 @@ To create this example cloud-only virtual network, do the following:
 
 5. On the DNS Servers and VPN Connectivity page, click the next arrow on the lower right. Azure will assign an Internet-based Azure DNS server to new virtual machines that are added to this virtual network, which will allow them to access Internet resources.
 
-	 -On the Virtual Network Address Spaces page, configure the following:
+	 - On the Virtual Network Address Spaces page, configure the following:
 
-		-For Address Space, select /8 in CIDR (ADDRESS COUNT)
+		- For Address Space, select /8 in CIDR (ADDRESS COUNT)
 
-		-For subnets, type hadoop over the existing name and 10.0.0.0 for the starting IP, then select /24(256) in the CIDR (ADDRESS COUNT). 
+		- For subnets, type hadoop over the existing name and 10.0.0.0 for the starting IP, then select /24(256) in the CIDR (ADDRESS COUNT). 
 
 ## Build an Ubuntu Image:
 
@@ -43,37 +43,37 @@ To create this example cloud-only virtual network, do the following:
 
 	3. On the Virtual machine configuration page, set the following:
 
-		-Virtual Machine Name: hdtemplate
+		- Virtual Machine Name: hdtemplate
 
-		-Size: A1
+		- Size: A1
 
-		-New User Name: hduser
+		- New User Name: hduser
 
-		-Authentication:
+		- Authentication:
 
-			-uncheck upload compatible ssh key for authentication
+			- uncheck upload compatible ssh key for authentication
 
-			-check provide a password
+			- check provide a password
 
-			-New password: <your choice>
+			- New password: <your choice>
 
 	4. click on the arrow on the lower right
 
 	5. On the second Virtual machine configuration page, set the following:
 
-		-CLOUD SERVICE: Create a new cloud service
+		- CLOUD SERVICE: Create a new cloud service
 
-		-CLOUD SERVICE DNS NAME: <your choice>
+		- CLOUD SERVICE DNS NAME: <your choice>
 
-		-REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
+		- REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
 
-		-VIRTUAL NETWORK SUBNETS: hadoop
+		- VIRTUAL NETWORK SUBNETS: hadoop
 
 	6. click the right arrow to finish
 
 	7. SSH into hdtemplate using PuTTy (Windows) or Terminal (Unix):
 
-		-To find the IP Address:
+		- To find the IP Address:
 
 			1. navigate to VIRTUAL MACHINES found on the left hand panel
 
@@ -83,7 +83,7 @@ To create this example cloud-only virtual network, do the following:
 
 			4. On the right hand side, PUBLIC VIRTUAL IP (VIP) ADDRESS is the IP you want
 
-		-SSH using the username hduser
+		- SSH using the username hduser
 
 	8. Install Java
 

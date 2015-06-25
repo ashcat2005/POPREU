@@ -98,12 +98,14 @@ To create this example cloud-only virtual network, do the following:
 	```
 
 9. Install Hadoop
+	```
 
-	1. wget http://apache.spinellicreations.com/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
+	wget http://apache.spinellicreations.com/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
 
-	2. tar -xvzf hadoop-2.6.0.tar.gz
+	tar -xvzf hadoop-2.6.0.tar.gz
 
-	3. sudo mv hadoop-2.6.0 /usr/local
+	sudo mv hadoop-2.6.0 /usr/local
+	```
 
 10. Set Environment Variables for Java & Hadoop
 
@@ -431,14 +433,14 @@ from:
 
 - [http://caen.github.io/hadoop/user-spark.html] (http://caen.github.io/hadoop/user-spark.html)
 
-Using YARN as Sparkís cluster manager confers a few benefits over Spark standalone and Mesos. 
-Spark supports two modes for running on YARN, ìyarn-clusterî mode and 	ìyarn-clientî mode.  
-Broadly, yarn-cluster mode makes sense for production jobs, while yarn-client mode makes sense for interactive and debugging uses where you want to see your applicationís output immediately.
+Using YARN as Spark's cluster manager confers a few benefits over Spark standalone and Mesos. 
+Spark supports two modes for running on YARN, `yarn-cluster` mode and 	`yarn-client` mode.  
+Broadly, yarn-cluster mode makes sense for production jobs, while yarn-client mode makes sense for interactive and debugging uses where you want to see your application's output immediately.
 
 ## Launching Spark on YARN:
-Ensure that HADOOP_CONF_DIR or YARN_CONF_DIR points to the directory which contains the (client side) configuration files for the Hadoop cluster. These configs are used to write to the dfs and connect to the YARN ResourceManager. The configuration contained in this directory will be distributed to the YARN cluster so that all containers used by the application use the same configuration. If the configuration 	references Java system properties or environment variables not managed by YARN, they 	should also be set in the Spark applicationís configuration (driver, executors, and 	the AM when running in client mode).
+Ensure that HADOOP_CONF_DIR or YARN_CONF_DIR points to the directory which contains the (client side) configuration files for the Hadoop cluster. These configs are used to write to the dfs and connect to the YARN ResourceManager. The configuration contained in this directory will be distributed to the YARN cluster so that all containers used by the application use the same configuration. If the configuration 	references Java system properties or environment variables not managed by YARN, they 	should also be set in the Spark application's configuration (driver, executors, and 	the AM when running in client mode).
 There are two deploy modes that can be used to launch Spark applications on YARN. In yarn-cluster mode, the Spark driver runs inside an application master process which is managed by YARN on the cluster, and the client can go away after initiating the application. In yarn-client mode, the driver runs in the client process, and the application master is only used for requesting resources from YARN.
-Unlike in Spark standalone and Mesos mode, in which the masterís address is specified in the ìmasterî parameter, in YARN mode the ResourceManagerís address is 	picked up from the Hadoop configuration. Thus, the master parameter is simply ìyarn-clientî or ìyarn-clusterî.
+Unlike in Spark standalone and Mesos mode, in which the master's address is specified in the `master` parameter, in YARN mode the ResourceManager's address is 	picked up from the Hadoop configuration. Thus, the master parameter is simply `yarn-client` or `yarn-cluster`.
 
 To launch a Spark application in yarn-cluster mode:
 
@@ -464,12 +466,12 @@ The above starts a YARN client program which starts the default Application Mast
 Then SparkPi will be run as a child thread of Application Master. 
 The client will periodically poll the Application Master for status updates and display them in the console. 
 The client will exit once your application has finished running.
-To launch a Spark application in yarn-client mode, do the same, but replace ìyarn-clusterî with ìyarn-clientî. 
+To launch a Spark application in yarn-client mode, do the same, but replace `yarn-cluster` with `yarn-client`. 
 To run spark-shell:
 `$ ./bin/spark-shell --master yarn-client <your application name>`
 
 To copy the data you need to HDFS:
 
-	1. Make a directory in hadoop for your data:  `hadoop fs -mkdir /user/hduser/<data folder name>`
+1. Make a directory in hadoop for your data:  `hadoop fs -mkdir /user/hduser/<data folder name>`
 
-	2. Put the data into the folder `hadoop fs -put spark-1.3.1-bin-hadoop2.6`
+2. Put the data into the folder `hadoop fs -put spark-1.3.1-bin-hadoop2.6`

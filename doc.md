@@ -143,7 +143,7 @@ To create this example cloud-only virtual network, do the following:
 
 	7. `vi core-site.xml`
 
-		1. remove the <configuration> and </configuration> tags
+		1. remove the `<configuration>` and `</configuration>` tags
 
 		2. insert the following:
 
@@ -162,7 +162,7 @@ To create this example cloud-only virtual network, do the following:
 
 11. `vi hdfs-site.xml`
 
-	1. remove the <configuration> and </configuration> tags
+	1. remove the `<configuration>` and `</configuration>` tags
 
 	2. insert the following:
 
@@ -194,7 +194,7 @@ To create this example cloud-only virtual network, do the following:
 
 16. `vi mapred-site.xml`
 
-	1. remove the <configuration> and </configuration> tags
+	1. remove the `<configuration>` and `</configuration>` tags
 
 	2. insert the following:
 
@@ -209,7 +209,7 @@ To create this example cloud-only virtual network, do the following:
 
 17. `vi yarn-site.xml`
 
-	1. remove the <configuration> and </configuration> tags
+	1. remove the `<configuration>` and `</configuration>` tags
 
 	2. insert the following:
 

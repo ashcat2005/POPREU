@@ -1,6 +1,6 @@
 # Setting up a Hadoop Cluster on Microsoft Azure 
 
-Taken from [This tutorial](http://clemmblog.azurewebsites.net/building-a-multi-node-hadoop-v2-cluster-with-ubuntu-on-windows-azure/)
+Taken from [this tutorial](http://clemmblog.azurewebsites.net/building-a-multi-node-hadoop-v2-cluster-with-ubuntu-on-windows-azure/)
 
 ## Set up Azure:
 
@@ -467,7 +467,7 @@ To launch a Spark application in yarn-client mode, do the same, but replace `yar
 To run spark-shell:
 `$ ./bin/spark-shell --master yarn-client <your application name>`
 
-To copy the data you need to HDFS:
+To copy data to HDFS:
 
 1. Make a directory in hadoop for your data:  `hadoop fs -mkdir /user/hduser/<data folder name>`
 

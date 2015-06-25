@@ -420,6 +420,12 @@ To create this example cloud-only virtual network, do the following:
 
 2. The final output should be something like:  `Estimated value of Pi is 3.141000000000000000000`
 
+## Stop the Cluster
+
+- Stop dfs: `stop-dfs.sh`
+
+- Stop yarn: `stop-yarn.sh`
+
 # Using Hadoop Yarn with Spark
 
 from: 

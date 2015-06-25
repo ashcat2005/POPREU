@@ -86,14 +86,16 @@ To create this example cloud-only virtual network, do the following:
 	- SSH using the username hduser
 
 8. Install Java
+	```
 
-	- sudo add-apt-repository ppa:webupd8team/java
+	sudo add-apt-repository ppa:webupd8team/java
 
-	- sudo apt-get update
+	sudo apt-get update
 
-	- sudo apt-get install oracle-java7-installer
+	sudo apt-get install oracle-java7-installer
 
-	- sudo apt-get install oracle-java7-set-default
+	sudo apt-get install oracle-java7-set-default
+	```
 
 9. Install Hadoop
 
@@ -105,9 +107,9 @@ To create this example cloud-only virtual network, do the following:
 
 10. Set Environment Variables for Java & Hadoop
 
-	1. to edit the .bashrc file, execute ìvi .bashrcî 
+	1. to edit the .bashrc file, execute `vi .bashrc`
 
-	2. to enter insert mode in VI press ìiî
+	2. to enter insert mode in VI press `i`
 
 	3. at the end of the .bashrc file add the following:
 		
@@ -131,13 +133,13 @@ To create this example cloud-only virtual network, do the following:
 		export PATH=$PATH:$HADOOP_HOME/bin:$JAVA_PATH/bin:$HADOOP_HOME/sbin
 		```
 
-	4. to exit and save press ìescî and type ì:wqî
+	4. to exit and save press `esc` and type `:wq`
 
-	5. cd  $HADOOP_HOME/etc/hadoop 
+	5. `cd  $HADOOP_HOME/etc/hadoop`
 
-	6. Open hadoop-env.sh and add `export JAVA_HOME=/usr/lib/jvm/java-7-oracle` to the file
+	6. `vi hadoop-env.sh` and add `export JAVA_HOME=/usr/lib/jvm/java-7-oracle` to the file
 
-	7. Open core-site.xml
+	7. `vi core-site.xml`
 
 		1. remove the <configuration> and </configuration> tags
 
@@ -156,7 +158,7 @@ To create this example cloud-only virtual network, do the following:
 			</configuration>
 			```
 
-11. open hdfs-site.xml
+11. `vi hdfs-site.xml`
 
 	1. remove the <configuration> and </configuration> tags
 
@@ -178,17 +180,17 @@ To create this example cloud-only virtual network, do the following:
 		</configuration>
 		```
 
-	-the value for dfs.replication is the number of replicas you want to keep in your HDFS file system.
+	 The value for dfs.replication is the number of replicas you want to keep in your HDFS file system.
 
-12. mkdir /home/hduser/hdfs
+12. `mkdir /home/hduser/hdfs`
 
-13. mkdir /home/hduser/hdfs/namenode
+13. `mkdir /home/hduser/hdfs/namenode`
 
-14. mkdir /home/hduser/hdfs/datanode
+14. `mkdir /home/hduser/hdfs/datanode`
 
-15. cp mapred-site.xml.template mapred-site.xml
+15. `cp mapred-site.xml.template mapred-site.xml`
 
-16. Open mapred-site.xml
+16. `vi mapred-site.xml`
 
 	1. remove the <configuration> and </configuration> tags
 
@@ -203,7 +205,7 @@ To create this example cloud-only virtual network, do the following:
 		</configuration>
 		```
 
-17. Open yarn-site.xml
+17. `vi yarn-site.xml`
 
 	1. remove the <configuration> and </configuration> tags
 
@@ -234,37 +236,37 @@ To create this example cloud-only virtual network, do the following:
 		 </configuration>
 		```
 
-18. sudo vi /etc/hosts
+18. `sudo vi /etc/hosts`
 
 	- add the following to the hosts file
+		```
+		10.0.0.4 master 
 
-		- 10.0.0.4 master 
+		10.0.0.5 slave01 
 
-		- 10.0.0.5 slave01 
-
-		- 10.0.0.6 slave02
-
+		10.0.0.6 slave02
+		```
 19. Install Numpy
 
-	1. sudo apt-get install python2.7-dev
+	1. `sudo apt-get install python2.7-dev`
 
-	2. sudo apt-get install python-pip
+	2. `sudo apt-get install python-pip`
 
-	3. sudo pip install numpy
+	3. `sudo pip install numpy`
 
 20. Install other packages that you will commonly need (you can still install packages later, but it will take longer)
 
-21. sudo waagent -deprovision
+21. `sudo waagent -deprovision`
 
-22. exit
+22. `exit`
 
 23. Shutdown hdimage from the management portal by clicking on the command bar
 
 24. when hdimage is stopped, click capture to open the Capture the Virtual Machine dialog box
 
-	1. give the Image Name: hdimage
+	1. give the Image Name: `hdimage`
 
-	2. Click I have run waagent-deprovision on the virtual machine
+	2. Click `I have run waagent-deprovision on the virtual machine`
 
 	3. click the check mark to capture the image
 
@@ -358,44 +360,48 @@ To create this example cloud-only virtual network, do the following:
 1. ssh into master (find the IP the same way as above)
 
 2. Get prebuilt version of PySpark
+	```
 
-	1. wget http://apache.osuosl.org/spark/spark-1.4.0/spark-1.4.0-bin-hadoop2.6.tgz
+	wget http://apache.osuosl.org/spark/spark-1.4.0/spark-1.4.0-bin-hadoop2.6.tgz
 
-	2. tar -xvzf spark-1.4.0-bin-hadoop2.6.tgz
+	tar -xvzf spark-1.4.0-bin-hadoop2.6.tgz
 
-	3. mv spark-1.4.0-bin-hadoop2.6 spark
+	mv spark-1.4.0-bin-hadoop2.6 spark
+	```
 
-3. vi $HADOOP_HOME/etc/hadoop/slaves
+3. `vi $HADOOP_HOME/etc/hadoop/slaves`
 
 	- remove localhost and add the following entries:
+		```
+		slave01
 
-		- slave01
-
-		- slave02
-
+		slave02
+		```
 4. Generate a public key by executing the following:
+	```
+	ssh-keygen -t rsa -P ""
 
-	1. ssh-keygen -t rsa -P ìî
-
-	2. cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+	cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+	```
 
 5. Accept the default file name (.ssh/id_rsa)
 
 6. Copy the public key to slave01 and slave02
+	```
+	ssh-copy-id -i .ssh/id_rsa.pub hduser@slave01
 
-	- ssh-copy-id -i .ssh/id_rsa.pub hduser@slave01
+	ssh-copy-id -i .ssh/id_rsa.pub hduser@slave02
+	```
 
-	- ssh-copy-id -i .ssh/id_rsa.pub hduser@slave02
+7. Check to see if you can passwordless ssh into slave01 by executing:	`ssh hduser@slave01`
 
-7. Check to see if you can passwordless ssh into slave01 by executing:	ssh hduser@slave01
+8. Exit slave01, by typing `exit`
 
-8. Exit slave01, by typing ìexitî
+9. Check to see if you can passwordless ssh into slave02 by executing:  `ssh hduser@slave02`
 
-9. Check to see if you can passwordless ssh into slave02 by executing:  ssh hduser@slave02
+10. Exit slave02, by typing `exit`
 
-10. Exit slave02, by typing ìexitî
-
-11. Format the NameNode on master with the command: hdfs namenode -format
+11. Format the NameNode on master with the command: `hdfs namenode -format`
 
 ## Start the Cluster
 

@@ -465,7 +465,7 @@ The client will periodically poll the Application Master for status updates and 
 The client will exit once your application has finished running.
 To launch a Spark application in yarn-client mode, do the same, but replace `yarn-cluster` with `yarn-client`. 
 To run spark-shell:
-`$ ./bin/spark-shell --master yarn-client <your application name>`
+`$ ./bin/spark-shell --master yarn-client`
 
 To copy data to HDFS:
 

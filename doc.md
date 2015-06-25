@@ -37,126 +37,107 @@ To create this example cloud-only virtual network, do the following:
 
 ## Build an Ubuntu Image:
 
-	1. In the lower left-hand corner of the screen, click New > Compute > Virtual Machine > From Gallery
+1. In the lower left-hand corner of the screen, click New > Compute > Virtual Machine > From Gallery
 
-	2. On the Choose an Image page, select Ubuntu Server 12.04 LTS and click the right arrow
+2. On the Choose an Image page, select Ubuntu Server 12.04 LTS and click the right arrow
 
-	3. On the Virtual machine configuration page, set the following:
+3. On the Virtual machine configuration page, set the following:
 
-		- Virtual Machine Name: hdtemplate
+	- Virtual Machine Name: hdtemplate
 
-		- Size: A1
+	- Size: A1
 
-		- New User Name: hduser
+	- New User Name: hduser
 
-		- Authentication:
+	- Authentication:
 
-			- uncheck upload compatible ssh key for authentication
+		- uncheck upload compatible ssh key for authentication
 
-			- check provide a password
+		- check provide a password
 
-			- New password: <your choice>
+		- New password: <your choice>
 
-	4. click on the arrow on the lower right
+4. click on the arrow on the lower right
 
-	5. On the second Virtual machine configuration page, set the following:
+5. On the second Virtual machine configuration page, set the following:
 
-		- CLOUD SERVICE: Create a new cloud service
+	- CLOUD SERVICE: Create a new cloud service
 
-		- CLOUD SERVICE DNS NAME: <your choice>
+	- CLOUD SERVICE DNS NAME: <your choice>
 
-		- REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
+	- REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
 
-		- VIRTUAL NETWORK SUBNETS: hadoop
+	- VIRTUAL NETWORK SUBNETS: hadoop
 
-	6. click the right arrow to finish
+6. click the right arrow to finish
 
-	7. SSH into hdtemplate using PuTTy (Windows) or Terminal (Unix):
+7. SSH into hdtemplate using PuTTy (Windows) or Terminal (Unix):
 
-		- To find the IP Address:
+	- To find the IP Address:
 
-			1. navigate to VIRTUAL MACHINES found on the left hand panel
+		1. navigate to VIRTUAL MACHINES found on the left hand panel
 
-			2. click on hdtemplate
+		2. click on hdtemplate
 
-			3. click on dashboard
+		3. click on dashboard
 
-			4. On the right hand side, PUBLIC VIRTUAL IP (VIP) ADDRESS is the IP you want
+		4. On the right hand side, PUBLIC VIRTUAL IP (VIP) ADDRESS is the IP you want
 
-		- SSH using the username hduser
+	- SSH using the username hduser
 
-	8. Install Java
+8. Install Java
 
-		- sudo add-apt-repository ppa:webupd8team/java
+	- sudo add-apt-repository ppa:webupd8team/java
 
-		- sudo apt-get update
+	- sudo apt-get update
 
-		- sudo apt-get install oracle-java7-installer
+	- sudo apt-get install oracle-java7-installer
 
-		- sudo apt-get install oracle-java7-set-default
+	- sudo apt-get install oracle-java7-set-default
 
-	9. Install Hadoop
+9. Install Hadoop
 
-		1. wget http://apache.spinellicreations.com/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
+	1. wget http://apache.spinellicreations.com/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
 
-		2. tar -xvzf hadoop-2.6.0.tar.gz
+	2. tar -xvzf hadoop-2.6.0.tar.gz
 
-		3. sudo mv hadoop-2.6.0 /usr/local
+	3. sudo mv hadoop-2.6.0 /usr/local
 
-	10. Set Environment Variables for Java & Hadoop
+10. Set Environment Variables for Java & Hadoop
 
-		1. to edit the .bashrc file, execute ìvi .bashrcî 
+	1. to edit the .bashrc file, execute ìvi .bashrcî 
 
-		2. to enter insert mode in VI press ìiî
+	2. to enter insert mode in VI press ìiî
 
-		3. at the end of the .bashrc file add the following:
-			
-			```
-			export HADOOP_PREFIX=/usr/local/hadoop-2.6.0
-			export HADOOP_HOME=/usr/local/hadoop-2.6.0
-			export HADOOP_MAPRED_HOME=${HADOOP_HOME}
-			export HADOOP_COMMON_HOME=${HADOOP_HOME}
-			export HADOOP_HDFS_HOME=${HADOOP_HOME}
-			export YARN_HOME=${HADOOP_HOME}
-			export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+	3. at the end of the .bashrc file add the following:
+		
+		```
+		export HADOOP_PREFIX=/usr/local/hadoop-2.6.0
+		export HADOOP_HOME=/usr/local/hadoop-2.6.0
+		export HADOOP_MAPRED_HOME=${HADOOP_HOME}
+		export HADOOP_COMMON_HOME=${HADOOP_HOME}
+		export HADOOP_HDFS_HOME=${HADOOP_HOME}
+		export YARN_HOME=${HADOOP_HOME}
+		export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
 
-			# Native Path
-			export HADOOP_COMMON_LIB_NATIVE_DIR=${HADOOP_PREFIX}/lib/native
-			export HADOOP_OPTS="-Djava.library.path=$HADOOP_PREFIX/lib"
+		# Native Path
+		export HADOOP_COMMON_LIB_NATIVE_DIR=${HADOOP_PREFIX}/lib/native
+		export HADOOP_OPTS="-Djava.library.path=$HADOOP_PREFIX/lib"
 
-			#Java path
-			export JAVA_HOME=/usr/lib/jvm/java-7-oracle
+		#Java path
+		export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 
-			# Add Hadoop bin/ directory to PATH
-			export PATH=$PATH:$HADOOP_HOME/bin:$JAVA_PATH/bin:$HADOOP_HOME/sbin
-			```
+		# Add Hadoop bin/ directory to PATH
+		export PATH=$PATH:$HADOOP_HOME/bin:$JAVA_PATH/bin:$HADOOP_HOME/sbin
+		```
 
-		4. to exit and save press ìescî and type ì:wqî
+	4. to exit and save press ìescî and type ì:wqî
 
-		5. cd  $HADOOP_HOME/etc/hadoop 
+	5. cd  $HADOOP_HOME/etc/hadoop 
 
-		6. Open hadoop-env.sh and add `export JAVA_HOME=/usr/lib/jvm/java-7-oracle` to the file
+	6. Open hadoop-env.sh and add `export JAVA_HOME=/usr/lib/jvm/java-7-oracle` to the file
 
-		7. Open core-site.xml
-
-			1. remove the <configuration> and </configuration> tags
-
-			2. insert the following:
-
-				```
-				<configuration> 
-					<property> 
-						<name>fs.default.name</name> 
-						<value>hdfs://master:9000</value> 
-					</property> 
-					<property> 
-						<name>hadoop.tmp.dir</name> 
-						<value>/home/hduser/tmp</value> 
-					</property> 
-				</configuration>
-				```
-
-	11. open hdfs-site.xml
+	7. Open core-site.xml
 
 		1. remove the <configuration> and </configuration> tags
 
@@ -165,305 +146,324 @@ To create this example cloud-only virtual network, do the following:
 			```
 			<configuration> 
 				<property> 
-					<name>dfs.replication</name> 
-					<value>2</value>
-				 </property> 
-				<property> 
-					<name>dfs.namenode.name.dir</name> <value>file:/home/hduser/hdfs/namenode</value> 
+					<name>fs.default.name</name> 
+					<value>hdfs://master:9000</value> 
 				</property> 
 				<property> 
-					<name>dfs.datanode.data.dir</name> 
-					<value>file:/home/hduser/hdfs/datanode</value> 
+					<name>hadoop.tmp.dir</name> 
+					<value>/home/hduser/tmp</value> 
 				</property> 
 			</configuration>
 			```
 
-		-the value for dfs.replication is the number of replicas you want to keep in your HDFS file system.
+11. open hdfs-site.xml
 
-	12. mkdir /home/hduser/hdfs
+	1. remove the <configuration> and </configuration> tags
 
-	13. mkdir /home/hduser/hdfs/namenode
+	2. insert the following:
 
-	14. mkdir /home/hduser/hdfs/datanode
+		```
+		<configuration> 
+			<property> 
+				<name>dfs.replication</name> 
+				<value>2</value>
+			 </property> 
+			<property> 
+				<name>dfs.namenode.name.dir</name> <value>file:/home/hduser/hdfs/namenode</value> 
+			</property> 
+			<property> 
+				<name>dfs.datanode.data.dir</name> 
+				<value>file:/home/hduser/hdfs/datanode</value> 
+			</property> 
+		</configuration>
+		```
 
-	15. cp mapred-site.xml.template mapred-site.xml
+	-the value for dfs.replication is the number of replicas you want to keep in your HDFS file system.
 
-	16. Open mapred-site.xml
+12. mkdir /home/hduser/hdfs
 
-		1. remove the <configuration> and </configuration> tags
+13. mkdir /home/hduser/hdfs/namenode
 
-		2. insert the following:
+14. mkdir /home/hduser/hdfs/datanode
 
-			```
-			<configuration> 
-				<property> 
-					<name>mapreduce.framework.name</name> 
-					<value>yarn</value> 
-				</property> 
-			</configuration>
-			```
+15. cp mapred-site.xml.template mapred-site.xml
 
-	17. Open yarn-site.xml
+16. Open mapred-site.xml
 
-		1. remove the <configuration> and </configuration> tags
+	1. remove the <configuration> and </configuration> tags
 
-		2. insert the following:
+	2. insert the following:
 
-			```
-			<configuration> 
-				<property> 
-					<name>yarn.nodemanager.aux-services</name> 
-					<value>mapreduce_shuffle</value> 
-				</property> 
-				<property> 
-					<name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name> 
-					<value>org.apache.hadoop.mapred.ShuffleHandler</value> 
-				</property> 
-				<property> 
-					<name>yarn.resourcemanager.resource-tracker.address</name> 
-					<value>master:8031</value> 
-				</property>
-				<property> 
-					<name>yarn.resourcemanager.address</name> 
-					<value>master:8032</value> 
-				</property> 
-				<property> 
-					<name>yarn.resourcemanager.scheduler.address</name>
-					<value>master:8030</value> 
-				</property>
-			 </configuration>
-			```
+		```
+		<configuration> 
+			<property> 
+				<name>mapreduce.framework.name</name> 
+				<value>yarn</value> 
+			</property> 
+		</configuration>
+		```
 
-	18. sudo vi /etc/hosts
+17. Open yarn-site.xml
 
-		- add the following to the hosts file
+	1. remove the <configuration> and </configuration> tags
 
-			- 10.0.0.4 master 
+	2. insert the following:
 
-			- 10.0.0.5 slave01 
+		```
+		<configuration> 
+			<property> 
+				<name>yarn.nodemanager.aux-services</name> 
+				<value>mapreduce_shuffle</value> 
+			</property> 
+			<property> 
+				<name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name> 
+				<value>org.apache.hadoop.mapred.ShuffleHandler</value> 
+			</property> 
+			<property> 
+				<name>yarn.resourcemanager.resource-tracker.address</name> 
+				<value>master:8031</value> 
+			</property>
+			<property> 
+				<name>yarn.resourcemanager.address</name> 
+				<value>master:8032</value> 
+			</property> 
+			<property> 
+				<name>yarn.resourcemanager.scheduler.address</name>
+				<value>master:8030</value> 
+			</property>
+		 </configuration>
+		```
 
-			- 10.0.0.6 slave02
+18. sudo vi /etc/hosts
 
-	19. Install Numpy
+	- add the following to the hosts file
 
-		1. sudo apt-get install python2.7-dev
+		- 10.0.0.4 master 
 
-		2. sudo apt-get install python-pip
+		- 10.0.0.5 slave01 
 
-		3. sudo pip install numpy
+		- 10.0.0.6 slave02
 
-	20. Install other packages that you will commonly need (you can still install packages later, but it will take longer)
+19. Install Numpy
 
-	21. sudo waagent -deprovision
+	1. sudo apt-get install python2.7-dev
 
-	22. exit
+	2. sudo apt-get install python-pip
 
-	23. Shutdown hdimage from the management portal by clicking on the command bar
+	3. sudo pip install numpy
 
-	24. when hdimage is stopped, click capture to open the Capture the Virtual Machine dialog box
+20. Install other packages that you will commonly need (you can still install packages later, but it will take longer)
 
-		1. give the Image Name: hdimage
+21. sudo waagent -deprovision
 
-		2. Click I have run waagent-deprovision on the virtual machine
+22. exit
 
-		3. click the check mark to capture the image
+23. Shutdown hdimage from the management portal by clicking on the command bar
+
+24. when hdimage is stopped, click capture to open the Capture the Virtual Machine dialog box
+
+	1. give the Image Name: hdimage
+
+	2. Click I have run waagent-deprovision on the virtual machine
+
+	3. click the check mark to capture the image
 
 ## Build the Master
 
-	1. Click the New button 
+1. Click the New button 
 
-	2. Click Virtual Machine 
+2. Click Virtual Machine 
 
-	3. Select From Gallery
+3. Select From Gallery
 
-	4. Select from My Images: hdimage
+4. Select from My Images: hdimage
 
-	5. click the right arrow
+5. click the right arrow
 
-	6. Enter the following parameters in the Virtual machine configuration
+6. Enter the following parameters in the Virtual machine configuration
 
-		- VIRTUAL MACHINE NAME: master
+	- VIRTUAL MACHINE NAME: master
 
-		- SIZE: A1
+	- SIZE: A1
 
-		- NEW USER NAME: hduser
+	- NEW USER NAME: hduser
 
-		- deselect UPLOAD COMPATIBLE SSH KEY FOR AUTHENTICATION
+	- deselect UPLOAD COMPATIBLE SSH KEY FOR AUTHENTICATION
 
-		- select PROVIDE A PASSWORD
+	- select PROVIDE A PASSWORD
 
-		- NEW PASSWORD: <your choice>
+	- NEW PASSWORD: <your choice>
 
-	7. Click the right arrow
+7. Click the right arrow
 
-	8. On the second Virtual machine configuration page
+8. On the second Virtual machine configuration page
 
-		- Select the CLOUD SERVICE DNS NAME that you previously created 
+	- Select the CLOUD SERVICE DNS NAME that you previously created 
 
-		- REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
+	- REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
 
-		- Virtual Network Subnets: hadoop
+	- Virtual Network Subnets: hadoop
 
-		- Add the following endpoints with the following attributes for (Name-Protocol-Public Port-Private Port):
+	- Add the following endpoints with the following attributes for (Name-Protocol-Public Port-Private Port):
 
-			- HDFS-TCP-50070-50070
+		- HDFS-TCP-50070-50070
 
-			- Cluster-TCP-8088-8088
+		- Cluster-TCP-8088-8088
 
-			- JobHistory-TCP-19888-19888
+		- JobHistory-TCP-19888-19888
 
-	9. Click the right arrow and then the checkmark 
+9. Click the right arrow and then the checkmark 
 
 ## Build the Slaves
-	1. Click the New button
+1. Click the New button
 
-	2. Click Virtual Machine
+2. Click Virtual Machine
 
-	3. Select From Gallery
+3. Select From Gallery
 
-	4. Select from My Images: hdimage
+4. Select from My Images: hdimage
 
-	5. click the right arrow
+5. click the right arrow
 
-	6. Enter the following parameters in the Virtual machine configuration
+6. Enter the following parameters in the Virtual machine configuration
 
-		- VIRTUAL MACHINE NAME: slave01
+	- VIRTUAL MACHINE NAME: slave01
 
-		- SIZE: A1
+	- SIZE: A1
 
-		- NEW USER NAME:hduser
+	- NEW USER NAME:hduser
 
-		- deselect UPLOAD COMPATIBLE SSH KEY FOR AUTHENTICATION
+	- deselect UPLOAD COMPATIBLE SSH KEY FOR AUTHENTICATION
 
-		- select PROVIDE A PASSWORD
+	- select PROVIDE A PASSWORD
 
-		- NEW PASSWORD: <your choice>
+	- NEW PASSWORD: <your choice>
 
-	7. Click the right arrow
+7. Click the right arrow
 
-	8. On the second Virtual machine configuration page
+8. On the second Virtual machine configuration page
 
-		-Select the CLOUD SERVICE DNS NAME that you previously created
+	-Select the CLOUD SERVICE DNS NAME that you previously created
 
-		-Virtual Network Subnets: hadoop
+	-Virtual Network Subnets: hadoop
 
-		-REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
+	-REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
 
-	9. Click the right arrow and then the checkmark 
+9. Click the right arrow and then the checkmark 
 
-	10. Repeat the above using the VIRTUAL MACHINE NAME slave02
+10. Repeat the above using the VIRTUAL MACHINE NAME slave02
 
 ## Configure the Master
 
-	1. ssh into master (find the IP the same way as above)
+1. ssh into master (find the IP the same way as above)
 
-	2. Get prebuilt version of PySpark
+2. Get prebuilt version of PySpark
 
-		1. wget http://apache.osuosl.org/spark/spark-1.4.0/spark-1.4.0-bin-hadoop2.6.tgz
+	1. wget http://apache.osuosl.org/spark/spark-1.4.0/spark-1.4.0-bin-hadoop2.6.tgz
 
-		2. tar -xvzf spark-1.4.0-bin-hadoop2.6.tgz
+	2. tar -xvzf spark-1.4.0-bin-hadoop2.6.tgz
 
-		3. mv spark-1.4.0-bin-hadoop2.6 spark
+	3. mv spark-1.4.0-bin-hadoop2.6 spark
 
-	3. vi $HADOOP_HOME/etc/hadoop/slaves
+3. vi $HADOOP_HOME/etc/hadoop/slaves
 
-		-remove localhost and add the following entries:
+	-remove localhost and add the following entries:
 
-			-slave01
+		-slave01
 
-			-slave02
+		-slave02
 
-	4. Generate a public key by executing the following:
+4. Generate a public key by executing the following:
 
-		1. ssh-keygen -t rsa -P ìî
+	1. ssh-keygen -t rsa -P ìî
 
-		2. cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+	2. cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
 
-	5. Accept the default file name (.ssh/id_rsa)
+5. Accept the default file name (.ssh/id_rsa)
 
-	6. Copy the public key to slave01 and slave02
+6. Copy the public key to slave01 and slave02
 
-		- ssh-copy-id -i .ssh/id_rsa.pub hduser@slave01
+	- ssh-copy-id -i .ssh/id_rsa.pub hduser@slave01
 
-		- ssh-copy-id -i .ssh/id_rsa.pub hduser@slave02
+	- ssh-copy-id -i .ssh/id_rsa.pub hduser@slave02
 
-	7. Check to see if you can passwordless ssh into slave01 by executing:	ssh hduser@slave01
+7. Check to see if you can passwordless ssh into slave01 by executing:	ssh hduser@slave01
 
-	8. Exit slave01, by typing ìexitî
+8. Exit slave01, by typing ìexitî
 
-	9. Check to see if you can passwordless ssh into slave02 by executing:  ssh hduser@slave02
+9. Check to see if you can passwordless ssh into slave02 by executing:  ssh hduser@slave02
 
-	10. Exit slave02, by typing ìexitî
+10. Exit slave02, by typing ìexitî
 
-	11. Format the NameNode on master with the command: hdfs namenode -format
+11. Format the NameNode on master with the command: hdfs namenode -format
 
 ## Start the Cluster
 
-	-Start the namenode: `hadoop-daemon.sh start namenode`
+-Start the namenode: `hadoop-daemon.sh start namenode`
 
-	-Start the datanode: `hadoop-daemons.sh start datanode`
+-Start the datanode: `hadoop-daemons.sh start datanode`
 
-	-Start resource manager on master: `yarn-daemon.sh start resourcemanager`
+-Start resource manager on master: `yarn-daemon.sh start resourcemanager`
 
-	-Start node managers on the slaves by running the following on the master: `yarn-daemons.sh start nodemanager`
+-Start node managers on the slaves by running the following on the master: `yarn-daemons.sh start nodemanager`
 
-	-Start the job history server on master: `mr-jobhistory-daemon.sh start historyserver`
+-Start the job history server on master: `mr-jobhistory-daemon.sh start historyserver`
 
 ## Test the Cluster
 
-	1. `hadoop jar /usr/local/hadoop-2.6.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar pi 8 1000`
+1. `hadoop jar /usr/local/hadoop-2.6.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar pi 8 1000`
 
-	2. The final output should be something like:  `Estimated value of Pi is 3.141000000000000000000`
+2. The final output should be something like:  `Estimated value of Pi is 3.141000000000000000000`
 
 # Using Hadoop Yarn with Spark
 
-	from: 
+from: 
 
-	- [https://spark.apache.org/docs/latest/running-on-yarn.html] (https://spark.apache.org/docs/latest/running-on-yarn.html)
+- [https://spark.apache.org/docs/latest/running-on-yarn.html] (https://spark.apache.org/docs/latest/running-on-yarn.html)
 
-	- [http://blog.cloudera.com/blog/2014/05/apache-spark-resource-management-and-yarn-app-models/] (http://blog.cloudera.com/blog/2014/05/apache-spark-resource-management-and-yarn-app-models/)
+- [http://blog.cloudera.com/blog/2014/05/apache-spark-resource-management-and-yarn-app-models/] (http://blog.cloudera.com/blog/2014/05/apache-spark-resource-management-and-yarn-app-models/)
 
-	- [http://caen.github.io/hadoop/user-spark.html] (http://caen.github.io/hadoop/user-spark.html)
+- [http://caen.github.io/hadoop/user-spark.html] (http://caen.github.io/hadoop/user-spark.html)
 
-	Using YARN as Sparkís cluster manager confers a few benefits over Spark standalone and Mesos. 
-	Spark supports two modes for running on YARN, ìyarn-clusterî mode and 	ìyarn-clientî mode.  
-	Broadly, yarn-cluster mode makes sense for production jobs, while yarn-client mode makes sense for interactive and debugging uses where you want to see your applicationís output immediately.
+Using YARN as Sparkís cluster manager confers a few benefits over Spark standalone and Mesos. 
+Spark supports two modes for running on YARN, ìyarn-clusterî mode and 	ìyarn-clientî mode.  
+Broadly, yarn-cluster mode makes sense for production jobs, while yarn-client mode makes sense for interactive and debugging uses where you want to see your applicationís output immediately.
 
-	## Launching Spark on YARN:
-	Ensure that HADOOP_CONF_DIR or YARN_CONF_DIR points to the directory which contains the (client side) configuration files for the Hadoop cluster. These configs are used to write to the dfs and connect to the YARN ResourceManager. The configuration contained in this directory will be distributed to the YARN cluster so that all containers used by the application use the same configuration. If the configuration 	references Java system properties or environment variables not managed by YARN, they 	should also be set in the Spark applicationís configuration (driver, executors, and 	the AM when running in client mode).
-	There are two deploy modes that can be used to launch Spark applications on YARN. In yarn-cluster mode, the Spark driver runs inside an application master process which is managed by YARN on the cluster, and the client can go away after initiating the application. In yarn-client mode, the driver runs in the client process, and the application master is only used for requesting resources from YARN.
-	Unlike in Spark standalone and Mesos mode, in which the masterís address is specified in the ìmasterî parameter, in YARN mode the ResourceManagerís address is 	picked up from the Hadoop configuration. Thus, the master parameter is simply ìyarn-clientî or ìyarn-clusterî.
-	
-	To launch a Spark application in yarn-cluster mode:
+## Launching Spark on YARN:
+Ensure that HADOOP_CONF_DIR or YARN_CONF_DIR points to the directory which contains the (client side) configuration files for the Hadoop cluster. These configs are used to write to the dfs and connect to the YARN ResourceManager. The configuration contained in this directory will be distributed to the YARN cluster so that all containers used by the application use the same configuration. If the configuration 	references Java system properties or environment variables not managed by YARN, they 	should also be set in the Spark applicationís configuration (driver, executors, and 	the AM when running in client mode).
+There are two deploy modes that can be used to launch Spark applications on YARN. In yarn-cluster mode, the Spark driver runs inside an application master process which is managed by YARN on the cluster, and the client can go away after initiating the application. In yarn-client mode, the driver runs in the client process, and the application master is only used for requesting resources from YARN.
+Unlike in Spark standalone and Mesos mode, in which the masterís address is specified in the ìmasterî parameter, in YARN mode the ResourceManagerís address is 	picked up from the Hadoop configuration. Thus, the master parameter is simply ìyarn-clientî or ìyarn-clusterî.
 
-	1. `cd spark`
+To launch a Spark application in yarn-cluster mode:
 
-	2. `./bin/spark-submit --class path.to.your.Class --master yarn-cluster [options] <app jar> [app options]`
+1. `cd spark`
 
-	For example:
+2. `./bin/spark-submit --class path.to.your.Class --master yarn-cluster [options] <app jar> [app options]`
 
-	```
-	$ ./bin/spark-submit --class org.apache.spark.examples.SparkPi \
-    	--master yarn-cluster \
-    	--num-executors 3 \
-    	--driver-memory 4g \
-    	--executor-memory 2g \
-    	--executor-cores 1 \
-   	--queue thequeue \
-    	lib/spark-examples*.jar \
-    	10
-	```
+For example:
 
-	The above starts a YARN client program which starts the default Application Master. 
-	Then SparkPi will be run as a child thread of Application Master. 
-	The client will periodically poll the Application Master for status updates and display them in the console. 
-	The client will exit once your application has finished running.
-	To launch a Spark application in yarn-client mode, do the same, but replace ìyarn-clusterî with ìyarn-clientî. 
-	To run spark-shell:
-	`$ ./bin/spark-shell --master yarn-client <your application name>`
-	
-	To copy the data you need to HDFS:
+```
+$ ./bin/spark-submit --class org.apache.spark.examples.SparkPi \
+	--master yarn-cluster \
+	--num-executors 3 \
+	--driver-memory 4g \
+	--executor-memory 2g \
+	--executor-cores 1 \
+	--queue thequeue \
+	lib/spark-examples*.jar \
+	10
+```
 
-		1. Make a directory in hadoop for your data:  `hadoop fs -mkdir /user/hduser/<data folder name>`
+The above starts a YARN client program which starts the default Application Master. 
+Then SparkPi will be run as a child thread of Application Master. 
+The client will periodically poll the Application Master for status updates and display them in the console. 
+The client will exit once your application has finished running.
+To launch a Spark application in yarn-client mode, do the same, but replace ìyarn-clusterî with ìyarn-clientî. 
+To run spark-shell:
+`$ ./bin/spark-shell --master yarn-client <your application name>`
 
-		2. Put the data into the folder `hadoop fs -put spark-1.3.1-bin-hadoop2.6`
+To copy the data you need to HDFS:
+
+	1. Make a directory in hadoop for your data:  `hadoop fs -mkdir /user/hduser/<data folder name>`
+
+	2. Put the data into the folder `hadoop fs -put spark-1.3.1-bin-hadoop2.6`

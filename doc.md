@@ -87,7 +87,6 @@ To create this example cloud-only virtual network, do the following:
 
 8. Install Java
 	```
-
 	sudo add-apt-repository ppa:webupd8team/java
 
 	sudo apt-get update
@@ -99,7 +98,6 @@ To create this example cloud-only virtual network, do the following:
 
 9. Install Hadoop
 	```
-
 	wget http://apache.spinellicreations.com/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
 
 	tar -xvzf hadoop-2.6.0.tar.gz
@@ -363,7 +361,6 @@ To create this example cloud-only virtual network, do the following:
 
 2. Get prebuilt version of PySpark
 	```
-
 	wget http://apache.osuosl.org/spark/spark-1.4.0/spark-1.4.0-bin-hadoop2.6.tgz
 
 	tar -xvzf spark-1.4.0-bin-hadoop2.6.tgz

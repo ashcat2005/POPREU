@@ -343,11 +343,11 @@ To create this example cloud-only virtual network, do the following:
 
 8. On the second Virtual machine configuration page
 
-	-Select the CLOUD SERVICE DNS NAME that you previously created
+	- Select the CLOUD SERVICE DNS NAME that you previously created
 
-	-Virtual Network Subnets: hadoop
+	- Virtual Network Subnets: hadoop
 
-	-REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
+	- REGION/AFFINITY GROUP/VIRTUAL NETWORK: hadoopnet
 
 9. Click the right arrow and then the checkmark 
 
@@ -367,11 +367,11 @@ To create this example cloud-only virtual network, do the following:
 
 3. vi $HADOOP_HOME/etc/hadoop/slaves
 
-	-remove localhost and add the following entries:
+	- remove localhost and add the following entries:
 
-		-slave01
+		- slave01
 
-		-slave02
+		- slave02
 
 4. Generate a public key by executing the following:
 
@@ -399,15 +399,15 @@ To create this example cloud-only virtual network, do the following:
 
 ## Start the Cluster
 
--Start the namenode: `hadoop-daemon.sh start namenode`
+- Start the namenode: `hadoop-daemon.sh start namenode`
 
--Start the datanode: `hadoop-daemons.sh start datanode`
+- Start the datanode: `hadoop-daemons.sh start datanode`
 
--Start resource manager on master: `yarn-daemon.sh start resourcemanager`
+- Start resource manager on master: `yarn-daemon.sh start resourcemanager`
 
--Start node managers on the slaves by running the following on the master: `yarn-daemons.sh start nodemanager`
+- Start node managers on the slaves by running the following on the master: `yarn-daemons.sh start nodemanager`
 
--Start the job history server on master: `mr-jobhistory-daemon.sh start historyserver`
+- Start the job history server on master: `mr-jobhistory-daemon.sh start historyserver`
 
 ## Test the Cluster
 

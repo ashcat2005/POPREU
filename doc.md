@@ -486,6 +486,8 @@ To copy data to HDFS:
 - If they aren't check the logs in `$HADOOP_HOME/logs` for errors.
 - If the error says `Incompatible clusterIDs`:
 	- Stop the cluster	
-	- Remove all contents from the `/home/hduser/tmp` folders on all machines
+	- Remove all contents from the `/home/hduser/tmp` folders on all machines: `rm -r /home/hduser/tmp/*`
+	- Remove all contents from the `/home/hduser/hdfs` folders on all machines: `rm -r /home/hduser/hdfs/*`
+	- rm -Rf $HADOOP_HOME/yarn_data/hdfs/*
 	- Reformat the namenode by executing `hdfs namenode -format`
 	- Restart the cluster

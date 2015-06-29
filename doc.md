@@ -488,6 +488,6 @@ To copy data to HDFS:
 	- Stop the cluster	
 	- Remove all contents from the `/home/hduser/tmp` folders on all machines: `rm -r /home/hduser/tmp/*`
 	- Remove all contents from the `/home/hduser/hdfs` folders on all machines: `rm -r /home/hduser/hdfs/*`
-	- `rm -Rf $HADOOP_HOME/yarn_data/hdfs/*`
+	- On all machines `rm -Rf $HADOOP_HOME/yarn_data/hdfs/*`
 	- Reformat the namenode by executing `hdfs namenode -format`
 	- Restart the cluster

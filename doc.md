@@ -157,6 +157,7 @@ To create this example cloud-only virtual network, do the following:
 				</property> 
 			</configuration>
 			```
+	8. `mkdir /home/hduser/tmp`
 
 11. `vi hdfs-site.xml`
 
@@ -478,3 +479,10 @@ To copy data to HDFS:
 1. Make a directory in hadoop for your data:  `hadoop fs -mkdir /user/hduser/<data folder name>`
 
 2. Put the data into the folder `hadoop fs -put <data path> /user/hduser/<data folder name>/<data filename> `
+
+##Troubleshooting
+
+- Use `jps` on the master to check if all namenode is running on the master and `jps` on the slave nodes to see if datanode is running on the slaves.
+- If they aren't check the logs in `$HADOOP_HOME/logs` for errors.
+- If the error says `Incompatible clusterIDs`, remove all contents from the /home/hduser/tmp folders on all machines
+- Reformat the namenode by executing `hdfs namenode -format`

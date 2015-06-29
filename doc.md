@@ -477,4 +477,4 @@ To copy data to HDFS:
 
 1. Make a directory in hadoop for your data:  `hadoop fs -mkdir /user/hduser/<data folder name>`
 
-2. Put the data into the folder `hadoop fs -put spark-1.3.1-bin-hadoop2.6`
+2. Put the data into the folder `hadoop fs -put <data path> /user/hduser/<data folder name>/<data filename> `

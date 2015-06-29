@@ -484,5 +484,5 @@ To copy data to HDFS:
 
 - Use `jps` on the master to check if all namenode is running on the master and `jps` on the slave nodes to see if datanode is running on the slaves.
 - If they aren't check the logs in `$HADOOP_HOME/logs` for errors.
-- If the error says `Incompatible clusterIDs`, remove all contents from the /home/hduser/tmp folders on all machines
+- If the error says `Incompatible clusterIDs`, remove all contents from the `/home/hduser/tmp` folders on all machines
 - Reformat the namenode by executing `hdfs namenode -format`

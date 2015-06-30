@@ -81,9 +81,9 @@ To create this example cloud-only virtual network, do the following:
 
 		3. click on dashboard
 
-		4. On the right hand side, PUBLIC VIRTUAL IP (VIP) ADDRESS is the IP you want
+		4. On the right hand side, find `SSH DETAILS`
 
-	- SSH using the username hduser
+	- SSH into hdtemplate by `ssh hduser@<address given by SSH DETAILS>`
 
 8. Install Java
 	```

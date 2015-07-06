@@ -81,9 +81,9 @@ To create this example cloud-only virtual network, do the following:
 
 		3. click on dashboard
 
-		4. On the right hand side, PUBLIC VIRTUAL IP (VIP) ADDRESS is the IP you want
+		4. On the right hand side, find `SSH DETAILS`
 
-	- SSH using the username hduser
+	- SSH into hdtemplate by `ssh hduser@<address given by SSH DETAILS>`
 
 8. Install Java
 	```
@@ -157,6 +157,7 @@ To create this example cloud-only virtual network, do the following:
 				</property> 
 			</configuration>
 			```
+	8. `mkdir /home/hduser/tmp`
 
 11. `vi hdfs-site.xml`
 
@@ -477,4 +478,16 @@ To copy data to HDFS:
 
 1. Make a directory in hadoop for your data:  `hadoop fs -mkdir /user/hduser/<data folder name>`
 
-2. Put the data into the folder `hadoop fs -put spark-1.3.1-bin-hadoop2.6`
+2. Put the data into the folder `hadoop fs -put <data path> /user/hduser/<data folder name>/<data filename> `
+
+##Troubleshooting
+
+- Use `jps` on the master to check if all namenode is running on the master and `jps` on the slave nodes to see if datanode is running on the slaves.
+- If they aren't check the logs in `$HADOOP_HOME/logs` for errors.
+- If the error says `Incompatible clusterIDs`:
+	- Stop the cluster	
+	- Remove all contents from the `/home/hduser/tmp` folders on all machines: `rm -r /home/hduser/tmp/*`
+	- Remove all contents from the `/home/hduser/hdfs` folders on all machines: `rm -r /home/hduser/hdfs/*`
+	- On all machines `rm -Rf $HADOOP_HOME/yarn_data/hdfs/*`
+	- Reformat the namenode by executing `hdfs namenode -format`
+	- Restart the cluster

@@ -1,0 +1,3 @@
+.ipynb_checkpoints
+*.fits
+data/round4_training_set.fits

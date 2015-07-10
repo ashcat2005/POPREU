@@ -10,4 +10,4 @@ These metrics were averaged over 5 trials each.
 ![Alt text](images/50x4.png)
 ![Alt text](images/50x10.png)
 
-From this we conclude that log2 is the optimal Feature Selection Strategy.
+From this we conclude that log2 is the optimal Feature Selection Strategy for these data. 

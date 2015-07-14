@@ -46,15 +46,19 @@ These metrics were averaged over 5 trials each. A threshold of 0.5 was used in e
 The following are ROC curves generated with each of the four feature subset selection strategies. The strategy used is displayed in bold above its respective ROC curve.
 
 <b> sqrt </b>
+
 ![Alt text](images/sqrt.png)
 
 <b> log2 </b>
+
 ![Alt text](images/log2.png)
 
 <b> all </b>
+
 ![Alt text](images/all.png)
 
 <b> onethird </b>
+
 ![Alt text](images/onethird.png)
 
 From this, we conclude that log2 is the optimal Feature Selection Strategy for these data. 

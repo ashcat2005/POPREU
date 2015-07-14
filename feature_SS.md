@@ -5,7 +5,7 @@ MLlib only allows input of strings: "auto", "sqrt", "log2", "all", and "onethird
 In our case, "auto" is the same as "sqrt" because we are using more than one tree. 
 With only one tree, "auto" is the same as "all".
 
-These metrics were averaged over 5 trials each. The data from which each graph was generated are displayed below each graph.
+These metrics were averaged over 5 trials each. A threshold of 0.5 was used in every trial. The data from which each graph was generated are displayed below each graph.
 
 ![Alt text](images/10x4.png)
 
@@ -42,5 +42,19 @@ These metrics were averaged over 5 trials each. The data from which each graph w
 | log2                 | 0.97412       | 0.990847            | 0.927617    | 0.816627          | 0.968974 |
 | all                  | 0.980228      | 0.986708            | 0.902969    | 0.861364          | 0.970972 |
 | onethird             | 0.968245      | 0.991173            | 0.926404    | 0.773565          | 0.963853 |
+
+The following are ROC curves generated with each of the four feature subset selection strategies. The strategy used is displayed in bold above its respective ROC curve.
+
+<b> sqrt </b>
+![Alt text](images/sqrt.png)
+
+<b> log2 </b>
+![Alt text](images/log2.png)
+
+<b> all </b>
+![Alt text](images/all.png)
+
+<b> onethird </b>
+![Alt text](images/onethird.png)
 
 From this, we conclude that log2 is the optimal Feature Selection Strategy for these data. 

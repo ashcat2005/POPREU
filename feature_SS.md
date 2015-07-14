@@ -8,6 +8,7 @@ With only one tree, "auto" is the same as "all".
 These metrics were averaged over 5 trials each. The data from which each graph was generated is displayed below each graph.
 
 ![Alt text](images/10x4.png)
+
 | selection   strategy | Galaxy Purity | Galaxy Completeness | Star Purity | Star Completeness | Accuracy |
 |----------------------|---------------|---------------------|-------------|-------------------|----------|
 | sqrt                 | 0.925411      | 0.991616            | 0.884379    | 0.444111          | 0.922775 |
@@ -16,6 +17,7 @@ These metrics were averaged over 5 trials each. The data from which each graph w
 | onethird             | 0.922473      | 0.990873            | 0.871172    | 0.420313          | 0.919133 |
 
 ![Alt text](images/10x10.png)
+
 | selection strategy | Galaxy Purity | Galaxy Completeness | Star Purity | Star Completeness | Accuracy    |
 |--------------------|---------------|---------------------|-------------|-------------------|-------------|
 | sqrt               | 0.968837798   | 0.989760799         | 0.915442379 | 0.776839566       | 0.963177711 |
@@ -24,6 +26,7 @@ These metrics were averaged over 5 trials each. The data from which each graph w
 | onethird           | 0.97088537    | 0.989674755         | 0.916373967 | 0.791917973       | 0.96498494  |
 
 ![Alt text](images/50x4.png)
+
 | selection   strategy | Galaxy Purity | Galaxy Completeness | Star Purity | Star Completeness | Accuracy |
 |----------------------|---------------|---------------------|-------------|-------------------|----------|
 | sqrt                 | 0.924606      | 0.991971            | 0.886268    | 0.435301          | 0.922221 |
@@ -32,6 +35,7 @@ These metrics were averaged over 5 trials each. The data from which each graph w
 | onethird             | 0.922642      | 0.992637            | 0.890975    | 0.418962          | 0.920756 |
 
 ![Alt text](images/50x10.png)
+
 | selection   strategy | Galaxy Purity | Galaxy Completeness | Star Purity | Star Completeness | Accuracy |
 |----------------------|---------------|---------------------|-------------|-------------------|----------|
 | sqrt                 | 0.968077      | 0.991001            | 0.924928    | 0.772368          | 0.963553 |

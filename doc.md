@@ -107,7 +107,7 @@ To create this example cloud-only virtual network, do the following:
 
 10. Set Environment Variables for Java & Hadoop
 
-	1. to edit the .bashrc file, execute `vi .bashrc`
+	1. to edit the .bashrc file, execute `sudo vi .bashrc`
 
 	2. to enter insert mode in VI press `i`
 
@@ -137,7 +137,7 @@ To create this example cloud-only virtual network, do the following:
 
 	5. `cd  $HADOOP_HOME/etc/hadoop`
 
-	6. `vi hadoop-env.sh` and add `export JAVA_HOME=/usr/lib/jvm/java-7-oracle` to the file
+	6. `vi hadoop-env.sh` and change the JAVA_HOME line to `export JAVA_HOME=/usr/lib/jvm/java-7-oracle`
 
 	7. `vi core-site.xml`
 

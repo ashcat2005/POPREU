@@ -10,7 +10,7 @@ import timeit
 
 dataFile = "../sgData.csv"
 test_size = 0.2
-num_trees = 400
+num_trees = 50
 max_depth = 10
 # auto, all, sqrt, log2, onethird
 strat = 'log2'
@@ -64,6 +64,21 @@ def get_probs (model, data):
     # Divide the accumulated scores over the number of trees
     return scores.map(lambda x: x/ntrees), scores
 
+def get_probs_classify (model, data):
+    # Collect the individual decision trees as JavaArray objects
+    trees = model._java_model.trees()
+    ntrees = model.numTrees()
+    scores = DecisionTreeModel(trees[0]).predict(data)
+
+    # For each tree, apply its prediction to the entire dataset and zip together the results
+    for i in range(1,ntrees):
+        dtm = DecisionTreeModel(trees[i])
+        scores = scores.zip(dtm.predict(data))
+        scores = scores.map(lambda x: x[0] + x[1])
+    
+    # Divide the accumulated scores over the number of trees
+    return scores.map(lambda x: x/ntrees)
+
 # Compute test error by thresholding probabilistic predictions
 def probTest(testData, model):
     threshold = 0.5
@@ -73,6 +88,11 @@ def probTest(testData, model):
     lab_pred = testData.map(lambda lp: lp.label).zip(pred)
     acc = lab_pred.filter(lambda (v, p): v != p).count() / float(testData.count())
     return (1 - acc), probsAndScores[1]
+
+def probTest_classify (testData, model):
+    probsAndScores = get_probs_classify(model,testData)
+    probs = probsAndScores
+    return probs
 
 def testOnce ():
     # split the data into training and testing sets
@@ -176,6 +196,11 @@ def test (model) :
     print ('Threshold method accuracy = ' + str(threshold_accuracy))
     #print(model.toDebugString())
 
+def classify (model) :
+    predictions = model.predict(feature_data)
+    probs = probTest_classify(feature_data, model)
+    save(probs, 'answers')
+
 sc = SparkContext(appName="stargalaxy")
 rawData = sc.textFile(dataFile) # is an RDD with 66389 things
 header = rawData.first()
@@ -185,13 +210,15 @@ heads = {}
 for i in range( len(header_split)):
     heads[header_split[i]] = i
 data = lines.map(parse).cache() # RDD of LabeledPoints
+feature_data = data.map(lambda x: x.features)
 
 #testOnce()
 #kfolds()
 
-#trainAndSave('testmodel')
-model = load('400trees')
-test(model)
+trainAndSave('testmodel')
+model = load('testmodel')
+classify(model)
+
 
 
 

@@ -381,7 +381,7 @@ To create this example cloud-only virtual network, do the following:
 	```
 	ssh-keygen -t rsa -P ""
 
-	cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+	cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 	```
 
 5. Accept the default file name (.ssh/id_rsa)

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import urllib2
 import subprocess
 
@@ -33,7 +32,6 @@ def main():
                   'W3p2m0', 'W3p2m1', 'W3p2m2', 'W3p2m3', 'W3p2p1', 'W3p2p2',
                   'W3p2p3', 'W3p3m0', 'W3p3m1', 'W3p3m2', 'W3p3m3', 'W3p3p1',
                   'W3p3p2', 'W3p3p3', 'W4m0m0', 'W4m0m1', 'W4m0m2', 'W4m0p1',
-        
                   'W4m1m0', 'W4m1m1', 'W4m1m2', 'W4m1p1', 'W4m1p2', 'W4m1p3',
                   'W4m2m0', 'W4m2p1', 'W4m2p2', 'W4m2p3', 'W4m3m0', 'W4m3p1',
                   'W4m3p2', 'W4m3p3', 'W4p1m0', 'W4p1m1', 'W4p1m2', 'W4p1p1',

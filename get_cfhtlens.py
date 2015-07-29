@@ -4,7 +4,7 @@ import subprocess
 def main():
     '''
     A quick script that dumps all columns of all the WIDE fields in the CFHTLenS survey
-    to the current directory
+    to the Hadoop Filesystem
     '''
 
     field_list = ['W1m0m0', 'W1m0m1', 'W1m0m2', 'W1m0m3', 'W1m0m4', 'W1m0p1',
@@ -38,18 +38,17 @@ def main():
                   'W4p2m0', 'W4p2m1', 'W4p2m2']         
     
     for field in field_list:
+    	#downloads file to local machine
         filename = field + '.csv'
-        
         url = 'http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync?REQUEST=doQuery&LANG=ADQL&format=csv&query=SELECT%0D%0A*%0D%0AFROM%0D%0Acfht.clens%0D%0AWHERE%0D%0Acfht.clens.field+%3D+%27' + field + '%27'
-    
         response = urllib2.urlopen(url)
-    
         print('Downloading', filename)
-        
         with open(filename, 'w') as f:
             f.write(response.read())
-
+		
+		#puts the file into Hadoop Filesystem
         subprocess.call('hadoop fs -put '+filename+' /user/hduser/',shell = True)
+        #deletes the file from local machine
         subprocess.call('rm '+filename,shell = True)
 
 if __name__ == '__main__':

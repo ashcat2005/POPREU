@@ -1,5 +1,5 @@
 #Machine Learning for Astrophysics with Spark
-##University of Illinois at Urbana-Champaign Passionate on Parallel REU
+University of Illinois at Urbana-Champaign Passionate on Parallel REU
 - Blake Jackson
 - Beatrice Liang
 - Mentors:

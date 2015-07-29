@@ -2,8 +2,8 @@
 University of Illinois at Urbana-Champaign Passionate on Parallel REU
 - Blake Jackson
 - Beatrice Liang
-
-Mentors:
+- Mentors:
   - Edward J. Kim
   - Dr. Robert Brunner
+
   
